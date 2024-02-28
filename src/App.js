@@ -1,12 +1,12 @@
 import './App.css';
+import router from './routers';
+import { RouterProvider } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        hello developers
-      </header>
-    </div>
+    
+      < RouterProvider router={router}></RouterProvider>
+    
   );
 }
 

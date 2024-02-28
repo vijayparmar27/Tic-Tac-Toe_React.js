@@ -4,9 +4,9 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import Root from "./Root";
-import Home from "../components/Home/Home";
-import Lobby from "../components/Lobby/Lobby";
-import TicTacToeBoard from "../components/TicTacToeBoard/TicTacToeBoard";
+import Home from "../pages/Home/Home";
+import Lobby from "../pages/Lobby/Lobby";
+import TicTacToeBoard from "../pages/TicTacToeBoard/TicTacToeBoard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
