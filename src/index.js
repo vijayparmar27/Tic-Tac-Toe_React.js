@@ -4,18 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Loader from "./components/hoc/LoaderMain/index"
+import { Provider } from 'react-redux';
 
-import router from "./routers"
+// import router from "./routers"
 import { store } from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <Provider store={store}> */}
+    <Provider store={store}>
       <Suspense fallback={Loader}>
         <App />
       </Suspense>
-    {/* </Provider> */}
+    </Provider>
   </React.StrictMode>
 );
 

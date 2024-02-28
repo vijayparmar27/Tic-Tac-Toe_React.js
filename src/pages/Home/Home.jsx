@@ -4,7 +4,7 @@ import "./home.css";
 function Home() {
   return (
     <div className="outlayer">
-      <div class="background-container"></div>
+      <div class="background-container">hiiiiiiiii</div>
     </div>
   );
 }
