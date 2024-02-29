@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./login.css";
 import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { loginApi } from "../../store/Access/login";
+import { useDispatch } from "react-redux";
+import { loginApi } from "../../store/Access/access";
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  useEffect(() => {
-    // dispatch(fetchUserData())
-  });
+  const navigate = useNavigate();
 
   const loginSubmitBtn = (e) => {
     e.preventDefault();
-    console.log(`--------- username :: `, username);
-    console.log(`--------- password :: `, password);
     dispatch(
       loginApi({
         uniqueId: username,
         password: password,
+      })).then((res) => {
+        navigate('/');
       })
-    );
+    ;
   };
 
   return (

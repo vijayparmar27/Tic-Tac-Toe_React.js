@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import "./register.css";
 import image from "../../images/game1.jpg";
+import { useSelector, useDispatch } from "react-redux";
+import { registerApi } from "../../store/Access/access";
+
 const Register = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmpassword] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+
+  const registerFormSubmit = (e) => {
+    e.preventDefault();
+    dispatch(registerApi({
+      "fullName": fullname,
+      "userName": username,
+      "email": email,
+      "password": password,
+      "confPassword": confirmpassword
+    }))
+  
+  };
+
   return (
     <>
       <div class="page-content">
@@ -29,6 +51,18 @@ const Register = () => {
                 id="full_name"
                 class="input-text"
                 placeholder="ex: Lindsey Wilson"
+                onChange={(e) => setFullname(e.target.value)}
+              />
+            </div>
+            <div class="form-row">
+              <label for="full-name">username:</label>
+              <input
+                type="text"
+                name="full_name"
+                id="full_name"
+                class="input-text"
+                placeholder="username"
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div class="form-row">
@@ -40,6 +74,7 @@ const Register = () => {
                 class="input-text"
                 required
                 pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div class="form-row">
@@ -50,6 +85,7 @@ const Register = () => {
                 id="password"
                 class="input-text"
                 required
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div class="form-row">
@@ -60,6 +96,7 @@ const Register = () => {
                 id="confirm_password"
                 class="input-text"
                 required
+                onChange={(e) => setConfirmpassword(e.target.value)}
               />
             </div>
             <div class="form-checkbox">
@@ -80,6 +117,7 @@ const Register = () => {
                 name="register"
                 class="register"
                 value="Register"
+                onClick={(e) => registerFormSubmit(e)}
               />
             </div>
           </form>

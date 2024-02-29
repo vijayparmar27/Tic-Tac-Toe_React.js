@@ -91,7 +91,7 @@ body {
 .user-game-details-tie,
 .logout-btn {
   height: 40px;
-  width: 120px;
+  width: 148px;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -100,6 +100,11 @@ body {
   margin-top: 10px;
   transition: background-color 0.3s ease, color 0.3s ease,
     transform 0.3s ease;
+
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.5vw;
 }
 
 .profile-edit-btn {
@@ -113,7 +118,7 @@ body {
 .user-game-details-loss,
 .user-game-details-tie{
   border: 3px solid #2d28286b;
-  font-size: 20px;
+  /* font-size: 20px; */
   background-color: #81818142;
   animation: pulse 1.5s infinite;
   color: #ffffff;
