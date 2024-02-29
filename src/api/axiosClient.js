@@ -4,12 +4,13 @@ const instance = axios.create();
 // const cookies = new Cookies();
 
 const axiosClient = axios.create({
-    baseURL: process.env.REACT_APP_END_POINT,
+    // baseURL: process.env.REACT_APP_END_POINT,
+    baseURL: "http://localhost:9000/",
 });
 instance.defaults.headers.common = { 'Access-Control-Allow-Origin': '*' }
 axiosClient.interceptors.response.use(
     function (response) {
-        console.log(`----- response :: `,response)
+        // console.log(`----- response :: `,response)
 
         return response;
     },

@@ -1,40 +1,63 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./login.css";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { register } from "../../store/Access/login";
+import { loginApi } from "../../store/Access/login";
+
 function Login() {
-//   const dispatch = useDispatch();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
   useEffect(() => {
-    // dispatch(register())
+    // dispatch(fetchUserData())
   });
+
+  const loginSubmitBtn = (e) => {
+    e.preventDefault();
+    console.log(`--------- username :: `, username);
+    console.log(`--------- password :: `, password);
+    dispatch(
+      loginApi({
+        uniqueId: username,
+        password: password,
+      })
+    );
+  };
 
   return (
     <>
-      <div class="login-form">
-        <div class="login-title">
+      <div className="login-form">
+        <div className="login-title">
           <p>Login</p>
         </div>
         <form>
-          <div class="email-username-input">
-            <input type="text" placeholder="Email Or User Name" />
+          <div className="email-username-input">
+            <input
+              type="text"
+              placeholder="Email Or User Name"
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
 
-          <div class="password-input">
-            <input type="password" placeholder="Password" />
+          <div className="password-input">
+            <input
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
-          <div class="forgot-password-div">
+          <div className="forgot-password-div">
             <div>
               <span>Forgot Password</span>
             </div>
           </div>
 
-          <div class="login-btn">
-            <button class="login-submit-btn">Login</button>
+          <div className="login-btn">
+            <button onClick={(e) => loginSubmitBtn(e)}>Login</button>
           </div>
 
-          <div class="register-page-link">
+          <div className="register-page-link">
             <p>
               If haven't acccount{" "}
               <span>

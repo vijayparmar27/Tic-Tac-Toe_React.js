@@ -67,3 +67,21 @@ export const myCustomApiService = {
   export const { actions, reducer } = userSlice;
   export default reducer;
   
+
+//   export const fetchUserData = createAsyncThunk('user/fetchUserData', async (_, { dispatch, getState, api }) => {
+//     try {
+//         console.log("=================");
+//         console.log("================= dispatch :: ",dispatch);
+//         console.log("================= getState :: ",getState);
+//         console.log("================= api :: ",api);
+//         // You can use the custom API service here
+//         const userData = await api.get("http://localhost:3001/test");
+//         console.log(`---------- userData :: `, userData.data);
+//         // Dispatch the action with the fetched user data
+//         // dispatch(register(userData.data));
+//         return userData.data;
+//     } catch (error) {
+//         // Handle errors if needed
+//         console.error('Error fetching user data:', error);
+//     }
+// });

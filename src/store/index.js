@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import todoReducer from "./todo/slice";
 import axiosClient from "../api/axiosClient";
-import { reducer } from "./Access/login";
+import login  from "./Access/login";
 
 export const store = configureStore({
     reducer: {
         // todo: todoReducer,
-        login : reducer
+        login : login
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         thunk: {
