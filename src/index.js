@@ -6,16 +6,19 @@ import reportWebVitals from './reportWebVitals';
 import Loader from "./components/hoc/LoaderMain/index"
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import { store } from './store';
+import { store, persistor } from './store';
+import { PersistGate } from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Suspense fallback={Loader}>
-        <ToastContainer position="top-right" />
-        <App />
-      </Suspense>
+      <PersistGate loading={null} persistor={persistor}>
+        <Suspense fallback={Loader}>
+          <ToastContainer position="top-right" />
+          <App />
+        </Suspense>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

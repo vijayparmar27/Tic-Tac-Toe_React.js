@@ -118,7 +118,7 @@ body {
 .user-game-details-loss,
 .user-game-details-tie{
   border: 3px solid #2d28286b;
-  /* font-size: 20px; */
+  font-size: 17px;
   background-color: #81818142;
   animation: pulse 1.5s infinite;
   color: #ffffff;

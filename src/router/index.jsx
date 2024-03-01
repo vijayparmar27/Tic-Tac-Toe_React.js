@@ -14,17 +14,9 @@ import { PrivateroutesArray, PublicroutesArray } from "./routers";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      {PublicroutesArray?.map(
-          ({ component: Component, path, title }, key) => (
-            <Route
-              path={path}
-              element={
-                    <Component />
-              }
-              key={key}
-            />
-          )
-        )}
+      {PublicroutesArray?.map(({ component: Component, path, title }, key) => (
+        <Route path={path} element={<Component />} key={key} />
+      ))}
       <Route
         path="/"
         element={
@@ -39,7 +31,7 @@ const router = createBrowserRouter(
               path={path}
               element={
                 <PrivateRouters>
-                    <Component />
+                  <Component />
                 </PrivateRouters>
               }
               key={key}

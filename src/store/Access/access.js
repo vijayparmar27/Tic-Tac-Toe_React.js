@@ -32,7 +32,7 @@ export const registerApi = createAsyncThunk(
 const accessSlice = createSlice({
     name: 'access',
     initialState: {
-        userData: null,
+        userData: {},
         error: null,
         loading: null
     },
