@@ -17,6 +17,7 @@ const router = createBrowserRouter(
       {PublicroutesArray?.map(({ component: Component, path, title }, key) => (
         <Route path={path} element={<Component />} key={key} />
       ))}
+      
       <Route
         path="/"
         element={

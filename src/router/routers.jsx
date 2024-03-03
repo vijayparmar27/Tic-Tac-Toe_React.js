@@ -11,6 +11,6 @@ export const PublicroutesArray = [
 
 export const PrivateroutesArray = [
   { path: "/lobby", component: Lobby, title: "Lobby" },
-  { path: "/gameplay", component: TicTacToeBoard, title: "TicTacToeBoard" },
+  { path: "/gameplay", component: TicTacToeBoard, title: "TicTacToeBoard" }
 ];
 

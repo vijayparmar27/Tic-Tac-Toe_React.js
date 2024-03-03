@@ -1,141 +1,119 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
+import SocketEventManage from './socketEventManage';
+import {  updateMessage } from './socketConnectionState';
+import { EVENTS } from '../../constants';
+import Cookies from 'js-cookie';
+
 
 export const disconnectSocket = createAsyncThunk(
     'socket/disconnect',
-    async (_, { dispatch, getState }) => {
-        const socket = getState().socket.socket;
+    (_, { getState }) => {
+        const { socket } = getState().socket;
         if (socket) {
-            await socket.disconnect();
+            // socket.off('connect');
+            // socket.off('disconnect');
+            // socket.offAny(); // assuming you have a 'any' event
+            // // Add more events as needed
+
+            // socket.disconnect();
         }
-        dispatch(socketSlice.actions.disconnect()); // Dispatch a disconnect action if needed
     }
 );
 
+// Modify your connectSocket thunk to check if the socket is already connected
 export const connectSocket = createAsyncThunk(
     'socket/connect',
-    async (_, { dispatch }) => {
-        try {
-            return new Promise((resolve, reject) => {
+    async (_, { getState, dispatch }) => {
+        const { socket } = getState().socket;
+        console.log("---------- socket ::  ", socket?.id)
+        // if (socket) {
+        //     // If socket is already connected, return the existing socket
+        //     return socket;
+        // }
 
-                const socket = io('http://localhost:9000/', { transports: ['websocket', 'polling'] });
+        const newSocket = io("http://localhost:9000/",{
+            reconnection: true,
+            reconnectionAttempts: Infinity, 
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000, 
+            randomizationFactor: 0.5,
+        });
 
-                socket.on('disconnect', () => {
-                    console.log('Socket disconnected:', socket.id);
+        newSocket.on('connect', () => {
+            console.log('Connected to server');
+            const getAccessToken = Cookies.get("token");
+            console.log('getAccessToken :: ', getAccessToken);
 
-                });
+            dispatch(sendEvent({event : EVENTS.SIGN_UP,data : {token : getAccessToken }}))
+        });
 
-                socket.onAny((event, ...args) => {
-                    console.log(`Received event: ${event}`, args);
-                });
+        newSocket.on("reconnect", (attempt) => {
+           console.log("======== attempt :: ",attempt)
+          })
 
-                // socket.on('message', (data) => {
-                //     const { event, payload } = data;
-                //     console.log('Received message: data ::', data);
-                //     console.log('Received message:', event, payload);
-                //     dispatch(addReceivedMessage({ event, payload }));
-                // });
+        newSocket.on('disconnect', () => {
+            console.log('Disconnected from server');
+            dispatch(disconnectSocket())
+        });
 
-                socket.on('connect', () => {
-                    console.log('Socket connected:', socket.connected);
-                    console.log('Socket ID:', socket.id);
-                    // dispatch(socketSlice.actions.connect(socket));
-                    resolve(socket)
-                });
-            })
-        } catch (error) {
-            console.error('Error connecting to socket:', error);
-            throw error; // Re-throw the error to handle it in the reducer
-        }
+        newSocket.onAny((eventName, ...args) => {
+            SocketEventManage(dispatch, eventName, args)
+        });
+
+        return newSocket;
     }
 );
 
-
-
-
-export const addReceivedMessage = createAsyncThunk(
-    'socket/message',
-    async ({ event, payload }) => {
-        return { event, payload };
-    }
-);
 
 const socketSlice = createSlice({
     name: 'socket',
     initialState: {
         socket: null,
-        connected: false,
-        socketId: null,
-        messages: [],
+        isConnected: false,
+        message: '',
+        gameBoard: ["", "", "", "", "", "", "", "", ""],
+        tableState: null,
+        isTurn: false,
+        currentTurnIndex: null,
+        currentTurnUserId: null,
+        time: 0,
+        isPopup: false,
+        popupData: {},
+        players: {},
+        currentPlayer: {}
     },
     reducers: {
-        // connect: (state, action) => {
-        //     state.socket = action.payload;
-        //     state.connected = true;
-        //     state.socketId = action.payload.id;
-        // },
-        disconnect: (state) => {
-            state.socket = null;
-            state.connected = false;
-            state.socketId = null;
+        // send event
+        sendEvent(state, action) {
+            if (state.socket) {
+                const requestData = {
+                    "en": action.payload.event,
+                    data: action.payload.data
+                }
+                state.socket.emit(action.payload.event, requestData);
+            }
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(connectSocket.pending, (state) => {
-                state.connected = false; // Reset connected state on connection attempt
+                state.isConnected = false;
             })
             .addCase(connectSocket.fulfilled, (state, action) => {
-                console.log(`------- state.socket :: before :: `, state.socket?.id)
+                console.log(`------------ `)
                 state.socket = action.payload;
-                state.connected = true;
-                state.socketId = action.payload.id;
-                console.log(`------- state.socket :: `, state.socket.id)
-
+                state.isConnected = true;
             })
-            .addCase(connectSocket.rejected, (state, action) => {
-                console.error('Socket connection failed:', action.error.message);
+            .addCase(connectSocket.rejected, (state) => {
+                state.isConnected = false;
             })
-            .addCase(addReceivedMessage.fulfilled, (state, action) => {
-                console.log(`-------------- action.payload :: playload`, action.payload)
-                state.messages.push(action.payload);
-            })
-            .addCase(disconnectSocket.fulfilled, (state) => {
-                // Add any additional logic you need when the socket is disconnected
-                console.log('Socket disconnected');
+            .addCase(updateMessage.fulfilled, (state, action) => {
+                state.message = action.payload;
             })
     },
 });
-
+export const socket = (state) => state.socket.socket
+export const { sendEvent } = socketSlice.actions;
+export const selectMessage = (state) => state.socket.message;
 export default socketSlice.reducer;
-
-export const useSocket = () => {
-    const dispatch = useDispatch();
-    const messages = useSelector((state) => state.socket.messages);
-    const connected = useSelector((state) => state.socket.connected);
-    const socket = useSelector((state) => state.socket.socket);
-
-    const connect = React.useCallback(async () => {
-        await dispatch(connectSocket());
-        // console.log(`-------------- io ::  `, io)
-    }, [dispatch]);
-    //   }, []);
-
-    const disconnect = React.useCallback(async () => {
-        await dispatch(disconnectSocket());
-    }, [dispatch]);
-
-    console.log(`-------------- sendMessage ::  `, socket)
-    const sendMessage = React.useCallback(async (data) => {
-        console.log(`-------------- sendMessage :: connected  `, connected)
-        if (socket) {
-            socket.emit('message', data);
-        } else {
-            console.warn('Socket is not connected. Cannot send message.');
-        }
-    });
-
-    return { connected, messages, connect, disconnect, sendMessage };
-};

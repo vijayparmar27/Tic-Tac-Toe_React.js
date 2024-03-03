@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { END_POINT } from '../../constants/endPoints';
 import Cookies from 'js-cookie'
 import showToast from '../../components/Toaster';
+import { signupThunk } from '../socket/socketConnectionState';
 
 export const loginApi = createAsyncThunk(
     'loginApi',
@@ -37,7 +38,12 @@ const accessSlice = createSlice({
         loading: null
     },
     reducers: {
-        // Add regular action creators here if needed
+        updateUserData(state, action) {
+            state.userData = {
+                ...state.userData,
+                ...action.payload
+            }
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -58,10 +64,19 @@ const accessSlice = createSlice({
             .addCase(registerApi.pending, (state) => {
             })
             .addCase(registerApi.rejected, (state, action) => {
-            });
+            })
+            .addCase(signupThunk.fulfilled, (state, action) => {
+                const data = JSON.parse(action.payload)
+                state.userData = {
+                    ...state.userData,
+                    ...data.data
+                }
+            })
     },
 
 });
+
+export const { updateUserData } = accessSlice.actions;
 
 export const userData = (state) => state.access.userData;
 

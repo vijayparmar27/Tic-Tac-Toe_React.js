@@ -4,6 +4,8 @@ import access from "./Access/access";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import socket from "./socket/socket";
+import lobbySlice from "./Lobby/lobbySlice";
+
 // Configuration for redux-persist
 const persistConfig = {
     key: "root", // key is required
@@ -17,7 +19,8 @@ export const store = configureStore({
     reducer: {
         // access: access,
         access: persistedReducer,
-        socket : socket
+        socket : socket,
+        lobby : lobbySlice
 
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
