@@ -35,7 +35,8 @@ const accessSlice = createSlice({
     initialState: {
         userData: {},
         error: null,
-        loading: null
+        loading: null,
+        isDisabledNavbar: false
     },
     reducers: {
         updateUserData(state, action) {

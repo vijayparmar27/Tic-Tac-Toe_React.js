@@ -8,10 +8,16 @@ import { sendEvent, connectSocket } from "../../store/socket/socket";
 function Header() {
   const dispatch = useDispatch();
   const userinfo = useSelector(userData);
-  const connected = useSelector((state) => state.socket.isConnected);
+  const isDisabledNavbar = useSelector((state) => state.gameManager.isDisabledNavbar);
   const navigate = useNavigate();
 
   const effectHasRun = useRef(false);
+
+  let divStyle = {
+    opacity: isDisabledNavbar ? 0.5 : 1,
+    pointerEvents: isDisabledNavbar ? 'none' : 'auto',
+  };
+
 
   useEffect(() => {
     if (!effectHasRun.current) {
@@ -22,6 +28,13 @@ function Header() {
     }
   }, []);
 
+  // useEffect(()=>{
+  //   divStyle = {
+  //     opacity: isDisabledNavbar ? 0.5 : 1,
+  //     pointerEvents: isDisabledNavbar ? 'none' : 'auto',
+  //   };
+  // },[isDisabledNavbar])
+
   const click = () => {
     console.log(`---------------`)
     navigate("/lobby");
@@ -29,7 +42,7 @@ function Header() {
 
   // console.log(`--------- userinfo :: `, userinfo);
   return (
-    <div className="navbar">
+    <div className="navbar" style={divStyle}>
       <div className="upsidenavbar">
         <div className="profile">
           <div className="profile-pic"></div>

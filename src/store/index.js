@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import socket from "./socket/socket";
 import lobbySlice from "./Lobby/lobbySlice";
+import gameManagerSlice from "./gameManager/gameManagerSlice";
 
 // Configuration for redux-persist
 const persistConfig = {
@@ -20,7 +21,8 @@ export const store = configureStore({
         // access: access,
         access: persistedReducer,
         socket : socket,
-        lobby : lobbySlice
+        lobby : lobbySlice,
+        gameManager : gameManagerSlice
 
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

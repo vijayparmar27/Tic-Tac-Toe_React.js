@@ -10,4 +10,5 @@ export const EVENTS = Object.freeze({
     LEAVE_TABLE: "LEAVE_TABLE",
     SCORE_BOARD: "SCORE_BOARD",
     REJOIN: "REJOIN",
+    POPUP : "POPUP"
 })

@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
 import SocketEventManage from './socketEventManage';
-import {  updateMessage } from './socketConnectionState';
+import { matchMakeThunk, updateMessage } from './socketConnectionState';
 import { EVENTS } from '../../constants';
 import Cookies from 'js-cookie';
+import { useSelector } from "react-redux";
 
 
 export const disconnectSocket = createAsyncThunk(
@@ -32,12 +33,13 @@ export const connectSocket = createAsyncThunk(
         //     return socket;
         // }
 
-        const newSocket = io("http://localhost:9000/",{
+        const newSocket = io("http://localhost:9000/", {
             reconnection: true,
-            reconnectionAttempts: Infinity, 
+            reconnectionAttempts: Infinity,
             reconnectionDelay: 1000,
-            reconnectionDelayMax: 5000, 
+            reconnectionDelayMax: 5000,
             randomizationFactor: 0.5,
+            transports: ['websocket', "polling"]
         });
 
         newSocket.on('connect', () => {
@@ -45,12 +47,12 @@ export const connectSocket = createAsyncThunk(
             const getAccessToken = Cookies.get("token");
             console.log('getAccessToken :: ', getAccessToken);
 
-            dispatch(sendEvent({event : EVENTS.SIGN_UP,data : {token : getAccessToken }}))
+            dispatch(sendEvent({ event: EVENTS.SIGN_UP, data: { token: getAccessToken } }))
         });
 
         newSocket.on("reconnect", (attempt) => {
-           console.log("======== attempt :: ",attempt)
-          })
+            console.log("======== attempt :: ", attempt)
+        })
 
         newSocket.on('disconnect', () => {
             console.log('Disconnected from server');
@@ -71,17 +73,7 @@ const socketSlice = createSlice({
     initialState: {
         socket: null,
         isConnected: false,
-        message: '',
-        gameBoard: ["", "", "", "", "", "", "", "", ""],
-        tableState: null,
-        isTurn: false,
-        currentTurnIndex: null,
-        currentTurnUserId: null,
-        time: 0,
-        isPopup: false,
-        popupData: {},
-        players: {},
-        currentPlayer: {}
+        message: ''
     },
     reducers: {
         // send event
@@ -93,7 +85,7 @@ const socketSlice = createSlice({
                 }
                 state.socket.emit(action.payload.event, requestData);
             }
-        },
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -113,7 +105,6 @@ const socketSlice = createSlice({
             })
     },
 });
-export const socket = (state) => state.socket.socket
 export const { sendEvent } = socketSlice.actions;
 export const selectMessage = (state) => state.socket.message;
 export default socketSlice.reducer;

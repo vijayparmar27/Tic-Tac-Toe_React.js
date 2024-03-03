@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { signupThunk, updateMessage } from "./socketConnectionState";
+import { matchMakeThunk, popupThunk, signupThunk, updateMessage } from "./socketConnectionState";
 import { EVENTS } from "../../constants";
 import { lobbyThunk } from "../Lobby/lobbySlice";
+import { loadingStop } from "../gameManager/gameManagerSlice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const SocketEventManage = (dispatch, event, data) => {
     console.log("---- SocketEventManage :: ", event);
@@ -16,7 +16,15 @@ const SocketEventManage = (dispatch, event, data) => {
             dispatch(signupThunk(data[0]));
             break;
         case EVENTS.LOBBY:
+            dispatch(loadingStop());
             dispatch(lobbyThunk(data[0]));
+            break;
+        case EVENTS.MATCH_MAKE:
+            dispatch(loadingStop());
+            dispatch(matchMakeThunk(data[0]));
+            break;
+        case EVENTS.POPUP:
+            dispatch(popupThunk(data[0]));
             break;
         default:
             console.log("====== call default :: SocketEventManage :: ");
