@@ -28,15 +28,8 @@ function Header() {
     }
   }, []);
 
-  // useEffect(()=>{
-  //   divStyle = {
-  //     opacity: isDisabledNavbar ? 0.5 : 1,
-  //     pointerEvents: isDisabledNavbar ? 'none' : 'auto',
-  //   };
-  // },[isDisabledNavbar])
 
   const click = () => {
-    console.log(`---------------`)
     navigate("/lobby");
   };
 

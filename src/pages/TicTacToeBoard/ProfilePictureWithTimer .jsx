@@ -1,5 +1,5 @@
 // ProfilePictureWithTimer.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { useSelector } from "react-redux";
 
@@ -9,23 +9,24 @@ const ProfilePictureWithTimer = () => {
   );
 
   const opponentData = useSelector((state) => state.gameManager.opponentData);
-  const timer = useSelector((state) => state.gameManager.currentPlayer);
+  const timer = useSelector((state) => state.gameManager.time);
 
-  let strokeWidth = 0;
-  let time = 0;
-  let isTurn = false;
+  const [strokeWidth, setStrokeWidth] = useState(0);
+  const [time, SetTime] = useState(0);
+  const [isTurn, setIsTurn] = useState(true);
 
   useEffect(() => {
-    if (currentTurnUserId == opponentData.userId) {
-      strokeWidth = 10;
-      time = timer;
-      isTurn = true;
+    if (currentTurnUserId && currentTurnUserId == opponentData?.userId) {
+      setStrokeWidth(10);
+      SetTime(timer);
+      setIsTurn(true);
     } else {
-      strokeWidth = 0;
-      time = 0;
-      isTurn = false;
+      setStrokeWidth(0);
+      SetTime(0);
+      setIsTurn(false);
     }
   }, [currentTurnUserId]);
+  console.log(`---------- strokeWidth :: 1 ::`, strokeWidth);
 
   return (
     <>
@@ -62,14 +63,13 @@ const ProfilePictureWithTimer = () => {
                   height: "115px",
                   borderRadius: "50%",
                   objectFit: "cover",
-                  
                 }}
               />
               {/* {remainingTime} */}
             </div>
           )}
         </CountdownCircleTimer>
-        <div style={{ fontSize: "1.4rem" }}>{opponentData?.userId}</div>
+        <div style={{ fontSize: "1.4rem" }}>{opponentData?.userName}</div>
       </div>
     </>
   );

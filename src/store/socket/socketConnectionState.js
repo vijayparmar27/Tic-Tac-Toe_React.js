@@ -23,3 +23,23 @@ export const popupThunk = createAsyncThunk(
     'socket/popupThunk',
     (data) => data
 );
+
+export const selectDealerThunk = createAsyncThunk(
+    'socket/selectDealer',
+    (data) => data
+);
+
+export const turnThunk = createAsyncThunk(
+    'socket/turn',
+    (data) => data
+);
+
+export const takeTurnThunk = createAsyncThunk(
+    'socket/takeTurn',
+    (data) => data
+);
+
+export const scoreboardThunk = createAsyncThunk(
+    'socket/scoreboard',
+    (data) => data
+);

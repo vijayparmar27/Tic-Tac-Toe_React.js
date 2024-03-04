@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { disablePopup } from "../../store/gameManager/gameManagerSlice";
 
 const style = {
   position: "absolute",
@@ -27,32 +28,33 @@ const style = {
 const GameStartTimer = () => {
   const isPopup = useSelector((state) => state.gameManager.isPopup);
   const popupData = useSelector((state) => state.gameManager.popupData);
-
+  const dispatch = useDispatch();
   const [secondsRemaining, setSecondsRemaining] = useState(popupData?.time);
-  const [message,setMessage] = useState(popupData?.message)
+  const [message, setMessage] = useState(popupData?.message);
   const [open, setOpen] = React.useState(true);
   const handleClose = () => setOpen(false);
   useEffect(() => {
-    if (popupData.popupType == "TostPopUp") {
+    if (popupData.popupType == "middleToastPopup") {
+      setMessage(null)
       const timerId = setInterval(() => {
         if (secondsRemaining > 0) {
           setSecondsRemaining(secondsRemaining - 1);
         } else {
           clearInterval(timerId);
           handleClose();
+          dispatch(disablePopup());
         }
       }, 1000);
 
       return () => clearInterval(timerId);
-    } else if (popupData.popupType == "middleToastPopup") {
-        if (!isPopup) {
-          handleClose();
-          setMessage(null);
-        } 
+    } else if (popupData.popupType == "TostPopUp") {
+      if (!isPopup) {
+        handleClose();
+        setMessage(null);
+      }
     }
   }, [secondsRemaining, isPopup]);
 
-console.log("--------------------------")
   return (
     <>
       <Modal

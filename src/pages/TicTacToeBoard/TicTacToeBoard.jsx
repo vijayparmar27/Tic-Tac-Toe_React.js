@@ -1,22 +1,42 @@
 import React, { useState } from "react";
 import "./TicTacToeBoard.css";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import ProfilePictureWithTimer from "./ProfilePictureWithTimer ";
 import PlayerProfilePictureWithTimer from "./PlayerProfilePictureWithTimer";
-import GameStartTimer from "../../components/GameStartTimer";
 import { useSelector, useDispatch } from "react-redux";
-import { popup } from "../../components/popup";
+import { popup } from "../../components/popup/popup";
+import MessagePopup from "../../components/popup/MessagePopup";
+import { EVENTS } from "../../constants";
+import { sendEvent } from "../../store/socket/socket";
+import ScoreBoard from "./ScoreBoard";
 
 const TicTacToeBoard = () => {
   // Initialize the board state with an array of 9 null values
-  const [board, setBoard] = useState(Array(9).fill(null));
+  const dispatch = useDispatch();
+
+  const board = useSelector((state) => state.gameManager.gameBoard);
   const isPopup = useSelector((state) => state.gameManager.isPopup);
+  const isInfoPopup = useSelector((state) => state.gameManager.isInfoPopup);
+  const isScoreboard = useSelector((state) => state.gameManager.isScoreboard);
+  const popupData = useSelector((state) => state.gameManager.popupData);
+  const currentTurnUserId = useSelector(
+    (state) => state.gameManager.currentTurnUserId
+  );
+  const userData = useSelector((state) => state.gameManager.currentPlayer);
 
   // Function to handle cell click
   const handleCellClick = (index) => {
-    const newBoard = [...board];
-    newBoard[index] = "X";
-    setBoard(newBoard);
+    if (currentTurnUserId && currentTurnUserId == userData?.userId) {
+      dispatch(
+        sendEvent({
+          event: EVENTS.TAKE_TURN,
+          data: {
+            index: index,
+          },
+        })
+      );
+    } else {
+      // tooltip
+    }
   };
 
   // Render the board with cells
@@ -40,10 +60,13 @@ const TicTacToeBoard = () => {
       <div className="outlayer">
         <div className="board-container">
           {/** popup data */}
-          {isPopup ? popup("TostPopUp") : ""}
+          {<ScoreBoard />}
+          {/* {isScoreboard && <ScoreBoard />}
+          {isPopup && popup(popupData.popupType)}
+          {isInfoPopup && <MessagePopup data={{ timer: 3, msg: "" }} />}
           <ProfilePictureWithTimer />
           <div className="board">{renderCells()}</div>
-          <PlayerProfilePictureWithTimer />
+          <PlayerProfilePictureWithTimer /> */}
         </div>
       </div>
     </>

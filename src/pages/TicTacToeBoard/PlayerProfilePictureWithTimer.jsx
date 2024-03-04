@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { useSelector } from "react-redux";
 
@@ -8,24 +8,24 @@ const PlayerProfilePictureWithTimer = () => {
   );
 
   const userData = useSelector((state) => state.gameManager.currentPlayer);
-  const timer = useSelector((state) => state.gameManager.currentPlayer);
+  const timer = useSelector((state) => state.gameManager.time);
 
-  let strokeWidth = 0;
-  let time = 0;
-  let isTurn = false;
+  const [strokeWidth, setStrokeWidth] = useState(0);
+  const [time, SetTime] = useState(0);
+  const [isTurn, setIsTurn] = useState(false);
 
   useEffect(() => {
-    if (currentTurnUserId == userData.userId) {
-      strokeWidth = 10;
-      time = timer;
-      isTurn = true;
+    if (currentTurnUserId && currentTurnUserId == userData?.userId) {
+      setStrokeWidth(10);
+      SetTime(timer);
+      setIsTurn(true);
     } else {
-      strokeWidth = 0;
-      time = 0;
-      isTurn = false;
+      setStrokeWidth(0);
+      SetTime(0);
+      setIsTurn(false);
     }
   }, [currentTurnUserId]);
-
+  console.log(`---------- strokeWidth :: `, strokeWidth);
   return (
     <>
       <div
@@ -67,7 +67,7 @@ const PlayerProfilePictureWithTimer = () => {
             </div>
           )}
         </CountdownCircleTimer>
-        <div style={{ fontSize: "1.4rem" }}>{userData?.userId}</div>
+        <div style={{ fontSize: "1.4rem" }}>{userData?.userName}</div>
       </div>
     </>
   );
