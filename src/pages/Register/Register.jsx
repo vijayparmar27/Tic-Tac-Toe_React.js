@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./register.css";
-import image from "../../images/game1.jpg";
+import image from "../../assets/images/game1.jpg";
 import { useSelector, useDispatch } from "react-redux";
 import { registerApi } from "../../store/Access/access";
 

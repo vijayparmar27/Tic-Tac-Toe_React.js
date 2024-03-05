@@ -48,6 +48,9 @@ const gameManagerSlice = createSlice({
         },
         disableScoreboard(state, action) {
             state.isScoreboard = false
+        },
+        changeTableState(state, action){
+            state.tableState = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -120,6 +123,6 @@ const gameManagerSlice = createSlice({
     }
 })
 
-export const { DisabledNavbar, enableNavbar, loadingStart, loadingStop, disablePopup,disableScoreboard } = gameManagerSlice.actions
+export const { DisabledNavbar, enableNavbar, loadingStart, loadingStop, disablePopup,disableScoreboard, changeTableState} = gameManagerSlice.actions
 
 export default gameManagerSlice.reducer;

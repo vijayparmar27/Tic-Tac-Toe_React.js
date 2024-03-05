@@ -60,13 +60,13 @@ const TicTacToeBoard = () => {
       <div className="outlayer">
         <div className="board-container">
           {/** popup data */}
-          {<ScoreBoard />}
-          {/* {isScoreboard && <ScoreBoard />}
+          {/* {<ScoreBoard />} */}
+          {isScoreboard && <ScoreBoard />}
           {isPopup && popup(popupData.popupType)}
           {isInfoPopup && <MessagePopup data={{ timer: 3, msg: "" }} />}
           <ProfilePictureWithTimer />
           <div className="board">{renderCells()}</div>
-          <PlayerProfilePictureWithTimer /> */}
+          <PlayerProfilePictureWithTimer />
         </div>
       </div>
     </>

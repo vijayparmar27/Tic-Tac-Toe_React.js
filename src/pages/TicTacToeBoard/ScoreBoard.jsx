@@ -5,9 +5,12 @@ import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
 import Box from "@mui/joy/Box";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { disableScoreboard } from "../../store/gameManager/gameManagerSlice";
+import {
+  changeTableState,
+  disableScoreboard,
+} from "../../store/gameManager/gameManagerSlice";
 
 const ScoreBoard = () => {
   const navigate = useNavigate();
@@ -17,7 +20,8 @@ const ScoreBoard = () => {
   );
 
   const gotoLobby = () => {
-    // dispatch(disableScoreboard())
+    dispatch(disableScoreboard());
+    dispatch(changeTableState(""));
     return navigate("/lobby");
   };
 
@@ -84,19 +88,11 @@ const ScoreBoard = () => {
               flexDirection: { xs: "column", sm: "row-reverse" },
             }}
           >
-            <Link
-              to="/lobby"
-              className={({ isActive, isPending }) =>
-                isPending ? "pending" : isActive ? "text-dark" : ""
-              }
-              style={{ textDecoration: "none" }}
+            <Button variant="solid" color="primary"
+            onClick={gotoLobby}
             >
-              <span style={{ color: "white" }}> Enter Lobby</span>
-
-              <Button variant="solid" color="primary">
-                Lobby
-              </Button>
-            </Link>
+              Lobby
+            </Button>
           </Box>
         </Sheet>
       </Modal>
