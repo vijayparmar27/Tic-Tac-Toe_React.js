@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   changeTableState,
   disableScoreboard,
+  enableNavbar,
 } from "../../store/gameManager/gameManagerSlice";
 
 const ScoreBoard = () => {
@@ -21,7 +22,8 @@ const ScoreBoard = () => {
 
   const gotoLobby = () => {
     dispatch(disableScoreboard());
-    dispatch(changeTableState(""));
+    dispatch(changeTableState(null));
+    dispatch(enableNavbar());
     return navigate("/lobby");
   };
 

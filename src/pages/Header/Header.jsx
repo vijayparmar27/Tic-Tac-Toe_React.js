@@ -2,15 +2,20 @@ import React, { useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./header.css";
 import { useSelector, useDispatch } from "react-redux";
-import { disableIsRejoin, disableIsRound, userData } from "../../store/Access/access";
+import { disableUserIsRejoin, userData } from "../../store/Access/access";
 import { sendEvent, connectSocket } from "../../store/socket/socket";
+import { disableIsRejoin } from "../../store/gameManager/gameManagerSlice";
 
 function Header() {
   const dispatch = useDispatch();
   const userinfo = useSelector(userData);
+  const isRejoin = useSelector((state) => state.gameManager.isRejoin);
+
   const isDisabledNavbar = useSelector(
     (state) => state.gameManager.isDisabledNavbar
   );
+  const tableState = useSelector((state) => state.gameManager.tableState);
+
   const navigate = useNavigate();
 
   const effectHasRun = useRef(false);
@@ -30,20 +35,23 @@ function Header() {
   }, []);
 
   useEffect(() => {
-    if (userinfo.isRejoin) {
+    if (isRejoin) {
       dispatch(disableIsRejoin());
-      // navigate("/gameplay");
+      dispatch(disableUserIsRejoin());
+      if (tableState && tableState != "SCORE_BOARD") {
+        navigate("/gameplay");
+      } else {
+        navigate("/lobby");
+      }
+    }else if (!tableState && !userinfo?.isRejoin){
+      navigate("/lobby");
     }
-    else{
-      // navigate("/lobby");
-    }
-  }, [userinfo]);
+  }, [isRejoin,userinfo]);
 
   const click = () => {
     navigate("/lobby");
   };
 
-  // console.log(`--------- userinfo :: `, userinfo);
   return (
     <div className="navbar" style={divStyle}>
       <div className="upsidenavbar">

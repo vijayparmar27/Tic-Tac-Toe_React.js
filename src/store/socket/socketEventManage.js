@@ -1,14 +1,13 @@
 import {
     collectBootThunk,
+    leaveTableThunk,
     matchMakeThunk,
     popupThunk,
     rejoinThunk,
     scoreboardThunk,
     selectDealerThunk,
     signupThunk,
-    takeTurnThunk,
     turnThunk,
-    updateMessage
 } from "./socketConnectionState";
 import { EVENTS } from "../../constants";
 import { lobbyThunk } from "../Lobby/lobbySlice";
@@ -48,6 +47,9 @@ const SocketEventManage = (dispatch, event, data) => {
             break;
         case EVENTS.REJOIN:
             dispatch(rejoinThunk(data[0]));
+            break;
+        case EVENTS.LEAVE_TABLE:
+            dispatch(leaveTableThunk(data[0]));
             break;
         case EVENTS.POPUP:
             dispatch(popupThunk(data[0]));

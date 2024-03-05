@@ -13,10 +13,10 @@ export const signupThunk = createAsyncThunk(
     (data, { dispatch }) => {
         const info = JSON.parse(data)
         if (info?.data?.isRejoin) {
-            // dispatch(sendEvent({
-            //     event: EVENTS.REJOIN,
-            //     data: {}
-            // }))
+            dispatch(sendEvent({
+                event: EVENTS.REJOIN,
+                data: {}
+            }))
         }
 
         return info.data
@@ -58,5 +58,9 @@ export const rejoinThunk =  createAsyncThunk(
 
 export const collectBootThunk =  createAsyncThunk(
     'socket/collectBoot',
+    (data) => data
+);
+export const leaveTableThunk =  createAsyncThunk(
+    'socket/leaveTable',
     (data) => data
 );

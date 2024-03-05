@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { collectBootThunk, matchMakeThunk, popupThunk, rejoinThunk, scoreboardThunk, selectDealerThunk, takeTurnThunk, turnThunk } from '../socket/socketConnectionState';
+import { collectBootThunk, leaveTableThunk, matchMakeThunk, popupThunk, rejoinThunk, scoreboardThunk, selectDealerThunk, takeTurnThunk, turnThunk } from '../socket/socketConnectionState';
 
 const gameManagerSlice = createSlice({
     name: "gameManager",
@@ -27,7 +27,8 @@ const gameManagerSlice = createSlice({
         message: "",
         symbol: "",
         isScoreboard: false,
-        scoreboardData: null
+        scoreboardData: null,
+        isRejoin: false
     },
     reducers: {
         loadingStart(state, action) {
@@ -57,7 +58,10 @@ const gameManagerSlice = createSlice({
             data = data.data
 
             state.gameBoard[Number(data.index)] = data.symbol
-        }
+        },
+        disableIsRejoin(state, action) {
+            state.isRejoin = false
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -72,6 +76,8 @@ const gameManagerSlice = createSlice({
                 state.winAmount = data.winAmount
                 state.players = data.players
                 state.currentPlayerJoinId = data.currentPlayerId
+                state.currentTurnIndex = null
+                state.currentTurnUserId = null
                 state.gameBoard = ["", "", "", "", "", "", "", "", ""]
 
                 for (const player of data.players) {
@@ -114,6 +120,10 @@ const gameManagerSlice = createSlice({
 
                 state.time = data.turnTime
                 state.currentTurnUserId = data.playerId
+
+                if (state.tableState !== "PLAYING_START") {
+                    state.tableState = "PLAYING_START"
+                }
             })
             .addCase(scoreboardThunk.fulfilled, (state, action) => {
                 let data = JSON.parse(action.payload)
@@ -142,19 +152,39 @@ const gameManagerSlice = createSlice({
                 state.players = data.players
                 state.gameBoard = data.gameBoard
 
-                if(data.tableState == "ROUND_TIMER_START"){
+                if (data.tableState == "ROUND_TIMER_START") {
                     state.isPopup = true
                     state.popupData.popupType = "middleToastPopup"
                     state.popupData.time = data.timer
                 }
 
+                if (
+                    data.tableState == "ROUND_TIMER_START" ||
+                    data.tableState == "COLLECT_BOOT" ||
+                    data.tableState == "SELECT_DEALER" ||
+                    data.tableState == "PLAYING_START"
+                ) {
+                    state.isDisabledNavbar = true
+                }
+
+                state.isRejoin = true
+
             })
-            .addCase(collectBootThunk.fulfilled,(state,action)=>{
+            .addCase(collectBootThunk.fulfilled, (state, action) => {
                 state.tableState = "COLLECT_BOOT"
+            })
+            .addCase(leaveTableThunk.fulfilled, (state, action) => {
+                let data = JSON.parse(action.payload)
+                data = data.data
+
+                if (data.userId == state.userId) {
+                    state.isRejoin = false
+
+                }
             })
     }
 })
 
-export const { takeTurn, DisabledNavbar, enableNavbar, loadingStart, loadingStop, disablePopup, disableScoreboard, changeTableState } = gameManagerSlice.actions
+export const { takeTurn, DisabledNavbar, enableNavbar, loadingStart, loadingStop, disablePopup, disableScoreboard, changeTableState, disableIsRejoin } = gameManagerSlice.actions
 
 export default gameManagerSlice.reducer;

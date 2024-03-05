@@ -19,7 +19,7 @@ const CollectBoot = () => {
 
   const defaultOptions = {
     loop: true,
-    autoplay: false,
+    autoplay: true,
     animationData: collectBoot,
   };
 
@@ -32,7 +32,6 @@ const CollectBoot = () => {
   return (
     <Modal
       open={true}
-      // onClose={handleClose} // Add onClose handler if needed
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

@@ -9,7 +9,8 @@ import { EVENTS } from "../../constants";
 import { sendEvent } from "../../store/socket/socket";
 import ScoreBoard from "./ScoreBoard";
 import CollectBoot from "../../components/CollectBoot";
-
+import ClientSideTooltip from "../../components/popup/ClientSideTooltip";
+import Button from "@mui/material/Button";
 const TicTacToeBoard = () => {
   // Initialize the board state with an array of 9 null values
   const dispatch = useDispatch();
@@ -19,19 +20,27 @@ const TicTacToeBoard = () => {
   const isInfoPopup = useSelector((state) => state.gameManager.isInfoPopup);
   const isScoreboard = useSelector((state) => state.gameManager.isScoreboard);
   const popupData = useSelector((state) => state.gameManager.popupData);
+  const symbol = useSelector((state) => state.gameManager.symbol);
   const tableState = useSelector((state) => state.gameManager.tableState);
   const currentTurnUserId = useSelector(
     (state) => state.gameManager.currentTurnUserId
   );
   const userData = useSelector((state) => state.gameManager.currentPlayer);
   const [isCollectBoot, SetIsCollectBoot] = useState(false);
+  const [clientSidePopup, SetClientSidePopup] = useState(false);
+
   useEffect(() => {
-    if(tableState == "COLLECT_BOOT"){
-      SetIsCollectBoot(true)
-    }else{
-      SetIsCollectBoot(false)
+    if (tableState == "COLLECT_BOOT") {
+      SetIsCollectBoot(true);
+    } else {
+      SetIsCollectBoot(false);
     }
-  },[tableState]);
+    if (tableState == "SELECT_DEALER") {
+      SetClientSidePopup(true);
+    } else {
+      SetClientSidePopup(false);
+    }
+  }, [tableState]);
 
   // Function to handle cell click
   const handleCellClick = (index) => {
@@ -48,6 +57,15 @@ const TicTacToeBoard = () => {
       // tooltip
     }
   };
+
+  const leaveButton = ()=>{
+    dispatch(
+      sendEvent({
+        event: EVENTS.LEAVE_TABLE,
+        data: {},
+      })
+    );
+  }
 
   // Render the board with cells
   const renderCells = () => {
@@ -70,14 +88,30 @@ const TicTacToeBoard = () => {
       <div className="outlayer">
         <div className="board-container">
           {/** popup data */}
+          <ClientSideTooltip data={`your symbol is ${symbol}.`} />
+          {/* {clientSidePopup && (
+            <ClientSideTooltip data={`your symbol is ${symbol}.`} />
+          )}
           {isCollectBoot && <CollectBoot />}
-          {/* <CollectBoot /> */}
-          {/* {isScoreboard && <ScoreBoard />}
+          {isScoreboard && <ScoreBoard />}
           {isPopup && popup(popupData.popupType)}
           {isInfoPopup && <MessagePopup data={{ timer: 3, msg: "" }} />}
           <ProfilePictureWithTimer />
           <div className="board">{renderCells()}</div>
           <PlayerProfilePictureWithTimer /> */}
+          <Button 
+          variant="contained" 
+          style={{
+            zIndex: 1400,
+            position: "revert-layer",
+            top: "46%",
+            left : "36%",
+            backgroundColor : "red"
+          }}
+          onClick={leaveButton}
+          >
+            Leave
+          </Button>
         </div>
       </div>
     </>

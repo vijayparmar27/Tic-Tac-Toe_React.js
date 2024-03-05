@@ -45,8 +45,8 @@ const accessSlice = createSlice({
                 ...action.payload
             }
         },
-        disableIsRejoin(state, action) {
-            state.userData.isRejoin = false
+        disableUserIsRejoin(state, action) {
+            state.isRejoin = false
         },
     },
     extraReducers: (builder) => {
@@ -81,7 +81,7 @@ const accessSlice = createSlice({
 
 });
 
-export const { updateUserData,disableIsRejoin } = accessSlice.actions;
+export const { updateUserData,disableUserIsRejoin } = accessSlice.actions;
 
 export const userData = (state) => state.access.userData;
 
