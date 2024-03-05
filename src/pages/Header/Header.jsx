@@ -2,22 +2,23 @@ import React, { useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./header.css";
 import { useSelector, useDispatch } from "react-redux";
-import { userData } from "../../store/Access/access";
+import { disableIsRejoin, disableIsRound, userData } from "../../store/Access/access";
 import { sendEvent, connectSocket } from "../../store/socket/socket";
 
 function Header() {
   const dispatch = useDispatch();
   const userinfo = useSelector(userData);
-  const isDisabledNavbar = useSelector((state) => state.gameManager.isDisabledNavbar);
+  const isDisabledNavbar = useSelector(
+    (state) => state.gameManager.isDisabledNavbar
+  );
   const navigate = useNavigate();
 
   const effectHasRun = useRef(false);
 
   let divStyle = {
     opacity: isDisabledNavbar ? 0.5 : 1,
-    pointerEvents: isDisabledNavbar ? 'none' : 'auto',
+    pointerEvents: isDisabledNavbar ? "none" : "auto",
   };
-
 
   useEffect(() => {
     if (!effectHasRun.current) {
@@ -28,6 +29,15 @@ function Header() {
     }
   }, []);
 
+  useEffect(() => {
+    if (userinfo.isRejoin) {
+      dispatch(disableIsRejoin());
+      // navigate("/gameplay");
+    }
+    else{
+      // navigate("/lobby");
+    }
+  }, [userinfo]);
 
   const click = () => {
     navigate("/lobby");

@@ -44,7 +44,10 @@ const accessSlice = createSlice({
                 ...state.userData,
                 ...action.payload
             }
-        }
+        },
+        disableIsRejoin(state, action) {
+            state.userData.isRejoin = false
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -67,17 +70,18 @@ const accessSlice = createSlice({
             .addCase(registerApi.rejected, (state, action) => {
             })
             .addCase(signupThunk.fulfilled, (state, action) => {
-                const data = JSON.parse(action.payload)
+                // const data = JSON.parse(action.payload)
+                console.log("------ signupThunk :: ",action.payload)
                 state.userData = {
                     ...state.userData,
-                    ...data.data
+                    ...action.payload
                 }
             })
     },
 
 });
 
-export const { updateUserData } = accessSlice.actions;
+export const { updateUserData,disableIsRejoin } = accessSlice.actions;
 
 export const userData = (state) => state.access.userData;
 

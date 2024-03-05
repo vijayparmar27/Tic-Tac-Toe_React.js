@@ -16,6 +16,9 @@ const ProfilePictureWithTimer = () => {
   const [isTurn, setIsTurn] = useState(true);
 
   useEffect(() => {
+    console.log("---------- opponentData :: ",opponentData)
+    console.log("---------- currentTurnUserId :: ",currentTurnUserId)
+
     if (currentTurnUserId && currentTurnUserId == opponentData?.userId) {
       setStrokeWidth(10);
       SetTime(timer);

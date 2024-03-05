@@ -1,16 +1,24 @@
-import { matchMakeThunk, popupThunk, scoreboardThunk, selectDealerThunk, signupThunk, takeTurnThunk, turnThunk, updateMessage } from "./socketConnectionState";
+import {
+    collectBootThunk,
+    matchMakeThunk,
+    popupThunk,
+    rejoinThunk,
+    scoreboardThunk,
+    selectDealerThunk,
+    signupThunk,
+    takeTurnThunk,
+    turnThunk,
+    updateMessage
+} from "./socketConnectionState";
 import { EVENTS } from "../../constants";
 import { lobbyThunk } from "../Lobby/lobbySlice";
-import { disablePopup, loadingStop } from "../gameManager/gameManagerSlice";
+import { disablePopup, loadingStop, takeTurn } from "../gameManager/gameManagerSlice";
 
 const SocketEventManage = (dispatch, event, data) => {
     console.log("---- SocketEventManage :: ", event);
     console.log(`------- data :: `, data[0], typeof data[0]);
 
     switch (event) {
-        case "message":
-            dispatch(updateMessage(data[0]));
-            break;
         case EVENTS.SIGN_UP:
             dispatch(signupThunk(data[0]));
             break;
@@ -23,6 +31,9 @@ const SocketEventManage = (dispatch, event, data) => {
             dispatch(disablePopup());
             dispatch(matchMakeThunk(data[0]));
             break;
+        case EVENTS.COLLECT_BOOT:
+            dispatch(collectBootThunk(data[0]));
+            break;
         case EVENTS.SELECT_DEALER:
             dispatch(selectDealerThunk(data[0]));
             break;
@@ -30,10 +41,13 @@ const SocketEventManage = (dispatch, event, data) => {
             dispatch(turnThunk(data[0]));
             break;
         case EVENTS.TAKE_TURN:
-            dispatch(takeTurnThunk(data[0]));
+            dispatch(takeTurn(data[0]));
             break;
         case EVENTS.SCORE_BOARD:
             dispatch(scoreboardThunk(data[0]));
+            break;
+        case EVENTS.REJOIN:
+            dispatch(rejoinThunk(data[0]));
             break;
         case EVENTS.POPUP:
             dispatch(popupThunk(data[0]));

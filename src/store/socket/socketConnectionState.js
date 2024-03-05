@@ -1,5 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { DisabledNavbar } from '../gameManager/gameManagerSlice';
+import { sendEvent } from './socket';
+import { EVENTS } from '../../constants';
 
 export const updateMessage = createAsyncThunk(
     'socket/updateMessage',
@@ -8,11 +10,21 @@ export const updateMessage = createAsyncThunk(
 
 export const signupThunk = createAsyncThunk(
     'socket/signup',
-    (data) => data
+    (data, { dispatch }) => {
+        const info = JSON.parse(data)
+        if (info?.data?.isRejoin) {
+            // dispatch(sendEvent({
+            //     event: EVENTS.REJOIN,
+            //     data: {}
+            // }))
+        }
+
+        return info.data
+    }
 );
 export const matchMakeThunk = createAsyncThunk(
     'socket/matchMake',
-    (data, { getState,dispatch }) => {
+    (data, { getState, dispatch }) => {
         const userinfo = getState().access.userData;
         dispatch(DisabledNavbar())
         return { data, id: userinfo._id }
@@ -34,12 +46,17 @@ export const turnThunk = createAsyncThunk(
     (data) => data
 );
 
-export const takeTurnThunk = createAsyncThunk(
-    'socket/takeTurn',
+export const scoreboardThunk = createAsyncThunk(
+    'socket/scoreboard',
     (data) => data
 );
 
-export const scoreboardThunk = createAsyncThunk(
-    'socket/scoreboard',
+export const rejoinThunk =  createAsyncThunk(
+    'socket/rejoin',
+    (data) => data
+);
+
+export const collectBootThunk =  createAsyncThunk(
+    'socket/collectBoot',
     (data) => data
 );
