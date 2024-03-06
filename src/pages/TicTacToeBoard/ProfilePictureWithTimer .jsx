@@ -26,7 +26,7 @@ const ProfilePictureWithTimer = () => {
     } else {
       setStrokeWidth(0);
       SetTime(0);
-      setIsTurn(false);
+      setIsTurn(false,timer);
     }
   }, [currentTurnUserId]);
   console.log(`---------- strokeWidth :: 1 ::`, strokeWidth);

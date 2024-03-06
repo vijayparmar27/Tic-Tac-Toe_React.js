@@ -58,9 +58,9 @@ function Header() {
         <div className="profile">
           <div className="profile-pic"></div>
           <div className="profile-pic-name">{userinfo.fullName}</div>
-          <div className="profile-edit">
+          {/* <div className="profile-edit">
             <div className="profile-edit-btn">Edit Profile</div>
-          </div>
+          </div> */}
         </div>
         <div className="user-game-details">balance : {userinfo.amount}</div>
         <div className="user-game-details-win">WIN : {userinfo.win}</div>

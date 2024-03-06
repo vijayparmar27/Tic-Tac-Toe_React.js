@@ -27,7 +27,7 @@ const PlayerProfilePictureWithTimer = () => {
       SetTime(0);
       setIsTurn(false);
     }
-  }, [currentTurnUserId]);
+  }, [currentTurnUserId,timer]);
   console.log(`---------- strokeWidth :: `, strokeWidth);
   return (
     <>

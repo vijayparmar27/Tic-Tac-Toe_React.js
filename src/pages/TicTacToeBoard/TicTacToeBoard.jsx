@@ -58,14 +58,14 @@ const TicTacToeBoard = () => {
     }
   };
 
-  const leaveButton = ()=>{
+  const leaveButton = () => {
     dispatch(
       sendEvent({
         event: EVENTS.LEAVE_TABLE,
         data: {},
       })
     );
-  }
+  };
 
   // Render the board with cells
   const renderCells = () => {
@@ -88,8 +88,8 @@ const TicTacToeBoard = () => {
       <div className="outlayer">
         <div className="board-container">
           {/** popup data */}
-          <ClientSideTooltip data={`your symbol is ${symbol}.`} />
-          {/* {clientSidePopup && (
+          {/* <ClientSideTooltip data={`your symbol is ${symbol}.`} />*/}
+          {clientSidePopup && (
             <ClientSideTooltip data={`your symbol is ${symbol}.`} />
           )}
           {isCollectBoot && <CollectBoot />}
@@ -98,17 +98,17 @@ const TicTacToeBoard = () => {
           {isInfoPopup && <MessagePopup data={{ timer: 3, msg: "" }} />}
           <ProfilePictureWithTimer />
           <div className="board">{renderCells()}</div>
-          <PlayerProfilePictureWithTimer /> */}
-          <Button 
-          variant="contained" 
-          style={{
-            zIndex: 1400,
-            position: "revert-layer",
-            top: "46%",
-            left : "36%",
-            backgroundColor : "red"
-          }}
-          onClick={leaveButton}
+          <PlayerProfilePictureWithTimer />
+          <Button
+            variant="contained"
+            style={{
+              zIndex: 1400,
+              position: "revert-layer",
+              // top: "46%",
+              left: "29%",
+              backgroundColor: "red",
+            }}
+            onClick={leaveButton}
           >
             Leave
           </Button>
