@@ -18,7 +18,6 @@ const persistedReducer = persistReducer(persistConfig, access);
 
 export const store = configureStore({
     reducer: {
-        // access: access,
         access: persistedReducer,
         socket : socket,
         lobby : lobbySlice,

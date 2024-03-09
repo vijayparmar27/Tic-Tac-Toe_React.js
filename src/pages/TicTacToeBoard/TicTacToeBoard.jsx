@@ -88,7 +88,6 @@ const TicTacToeBoard = () => {
       <div className="outlayer">
         <div className="board-container">
           {/** popup data */}
-          {/* <ClientSideTooltip data={`your symbol is ${symbol}.`} />*/}
           {clientSidePopup && (
             <ClientSideTooltip data={`your symbol is ${symbol}.`} />
           )}
@@ -99,7 +98,7 @@ const TicTacToeBoard = () => {
           <ProfilePictureWithTimer />
           <div className="board">{renderCells()}</div>
           <PlayerProfilePictureWithTimer />
-          <Button
+          {/* <Button
             variant="contained"
             style={{
               zIndex: 1400,
@@ -111,7 +110,7 @@ const TicTacToeBoard = () => {
             onClick={leaveButton}
           >
             Leave
-          </Button>
+          </Button> */}
         </div>
       </div>
     </>

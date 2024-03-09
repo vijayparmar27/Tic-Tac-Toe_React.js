@@ -64,6 +64,11 @@ const accessSlice = createSlice({
 
         builder
             .addCase(registerApi.fulfilled, (state, action) => {
+                if (action.payload.status === true) {
+                    showToast('register', 'success', action.payload.message);
+                } else {
+                    showToast('register', 'info', action.payload.message);
+                }
             })
             .addCase(registerApi.pending, (state) => {
             })
@@ -71,7 +76,7 @@ const accessSlice = createSlice({
             })
             .addCase(signupThunk.fulfilled, (state, action) => {
                 // const data = JSON.parse(action.payload)
-                console.log("------ signupThunk :: ",action.payload)
+                console.log("------ signupThunk :: ", action.payload)
                 state.userData = {
                     ...state.userData,
                     ...action.payload
@@ -81,7 +86,7 @@ const accessSlice = createSlice({
 
 });
 
-export const { updateUserData,disableUserIsRejoin } = accessSlice.actions;
+export const { updateUserData, disableUserIsRejoin } = accessSlice.actions;
 
 export const userData = (state) => state.access.userData;
 

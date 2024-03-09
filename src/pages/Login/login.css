@@ -78,8 +78,20 @@
   justify-content: center;
   padding-bottom: 49px;
 }
+.register-page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 49px;
+}
 
 .login-form form .register-page-link p span {
+  font-weight: bold;
+  cursor: pointer;
+  color: #fa0000;
+  font-style: italic;
+}
+.register-page-link p span {
   font-weight: bold;
   cursor: pointer;
   color: #fa0000;

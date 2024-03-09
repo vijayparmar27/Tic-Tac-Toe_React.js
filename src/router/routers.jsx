@@ -10,6 +10,7 @@ export const PublicroutesArray = [
 ]
 
 export const PrivateroutesArray = [
+  { path: "/", component: Home, title: "Home" },
   { path: "/lobby", component: Lobby, title: "Lobby" },
   { path: "/gameplay", component: TicTacToeBoard, title: "TicTacToeBoard" }
 ];

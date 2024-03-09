@@ -3,6 +3,7 @@ import "./register.css";
 import image from "../../assets/images/game1.jpg";
 import { useSelector, useDispatch } from "react-redux";
 import { registerApi } from "../../store/Access/access";
+import { NavLink } from "react-router-dom";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -99,7 +100,7 @@ const Register = () => {
                 onChange={(e) => setConfirmpassword(e.target.value)}
               />
             </div>
-            <div class="form-checkbox">
+            {/* <div class="form-checkbox">
               <label class="container">
                 <p>
                   By signing up, you agree to the{" "}
@@ -110,7 +111,7 @@ const Register = () => {
                 <input type="checkbox" name="agree" id="agree" />
                 <span class="checkmark"></span>
               </label>
-            </div>
+            </div> */}
             <div class="form-row-last">
               <input
                 type="submit"
@@ -120,6 +121,26 @@ const Register = () => {
                 onClick={(e) => registerFormSubmit(e)}
               />
             </div>
+
+            
+          <div className="register-page-link">
+            <p>
+              If have acccount{" "}
+              <span>
+                <NavLink
+                  to="/login"
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "active" : ""
+                  }
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  Login
+                </NavLink>
+              </span>
+              {` here...`}
+            </p>
+          </div>
+
           </form>
         </div>
       </div>
